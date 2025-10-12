@@ -199,7 +199,9 @@
   <nav class="navbar">
     <div class="nav-container">
       <div class="nav-left">
-        <div class="site-logo-pixel">KEWLKRAFT</div>
+<div class="site-logo-pixel">
+  <img src="images/minecraft_title.png" alt="KewlKraft Logo" style="height:40px; object-fit:contain;">
+</div>
         <div style="color:var(--muted); font-size:13px; margin-left:6px">Community Server</div>
       </div>
 
@@ -222,7 +224,9 @@
     <section id="home" class="hero">
       <div class="hero-left">
         <div style="display:flex;align-items:center;gap:12px">
-          <div class="server-logo">KK</div>
+<div class="server-logo">
+  <img src="images/logo.png" alt="KewlKraft Logo" style="width:100%; height:100%; object-fit:cover; border-radius:14px;">
+</div>
           <div>
             <div style="font-size:13px;color:var(--muted)">KewlKraft</div>
             <div style="font-weight:700;font-size:16px">OP SURVIVAL</div>
@@ -312,9 +316,7 @@
             <!-- Recent donors placeholders -->
             <div class="recent-donors">
               <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Recent supporters</div>
-              <div class="donor-row"><div class="donor-avatar">A</div><div class="donor-meta">Alex <div style="font-size:12px;color:var(--muted)">Thanks!</div></div><div class="donor-amt">$5</div></div>
-              <div class="donor-row"><div class="donor-avatar">M</div><div class="donor-meta">Mina <div style="font-size:12px;color:var(--muted)">Keep it up</div></div><div class="donor-amt">$3</div></div>
-              <div class="donor-row"><div class="donor-avatar">S</div><div class="donor-meta">Sam <div style="font-size:12px;color:var(--muted)">For hosting</div></div><div class="donor-amt">$1</div></div>
+              <div class="donor-row"><div class="donor-avatar">K</div><div class="donor-meta"> KewlDev<div style="font-size:12px;color:var(--muted)">Upgraded to standard :D</div></div><div class="donor-amt">$5</div></div>
             </div>
           </div>
         </div>
@@ -434,7 +436,7 @@
     dollarsPerBlock: 10,   // cost for 1,800 credits
     goalCredits: 10800,    // 6 months -> 10,800 credits
     // Set the amount you've already raised in USD here:
-    raisedUSD: 0.00
+    raisedUSD: 5.00
   };
   // Derived
   CONFIG.goalUSD = (CONFIG.goalCredits / CONFIG.creditsPerBlock) * CONFIG.dollarsPerBlock; // $60
@@ -446,6 +448,8 @@
   const progressPercent = document.getElementById('progressPercent');
   const progressRemaining = document.getElementById('progressRemaining');
   const goalUSDEl = document.getElementById('goalUSD');
+
+  
 
   // Initialize UI
   function renderAll(){
