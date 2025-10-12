@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KewlKraft — Support the Server</title>
+
+<!-- Pixel font for title + Inter for body -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+  :root{
+    --bg:#071022;
+    --bg-2:#071826;
+    --muted:#9aa6bf;
+    --accent-1:#2d8cff; /* blue */
+    --accent-2:#6ee7ff;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+    --card:#0b1320;
+    --radius:14px;
+    --accent-glow: rgba(45,140,255,0.12);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background: linear-gradient(180deg,var(--bg) 0%, var(--bg-2) 60%);
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+    min-height:100vh;
+  }
+
+  /* Subtle node background using SVG data URL (no external libs) */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image: radial-gradient(circle at 15% 10%, rgba(45,140,255,0.04) 0px, transparent 40px),
+                      radial-gradient(circle at 85% 30%, rgba(110,231,255,0.03) 0px, transparent 50px),
+                      radial-gradient(circle at 50% 85%, rgba(110,231,255,0.02) 0px, transparent 80px);
+    z-index:0;
+    pointer-events:none;
+  }
+
+  /* Header / Nav */
+  .navbar{
+    width:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(7,10,20,0.55), rgba(7,10,20,0.25));
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    z-index:1000;
+  }
+  .nav-container{
+    max-width:1200px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 20px;
+  }
+  .nav-left{display:flex;align-items:center;gap:12px}
+  .site-logo-pixel{
+    font-family: "Press Start 2P", monospace;
+    color: var(--accent-1);
+    font-size:15px;
+    letter-spacing:1px;
+    text-shadow: 0 0 8px rgba(45,140,255,0.12);
+  }
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    margin-left:18px;
+    font-weight:500;
+    font-size:14px;
+  }
+  .nav-links a:hover{color:var(--accent-1)}
+
+  /* Layout */
+  .main {
+    position:relative;
+    z-index:1;
+    max-width:1200px;
+    margin:0 auto;
+    padding:110px 20px 40px; /* top padding to account for fixed nav */
+  }
+
+  .hero{
+    display:flex;
+    gap:32px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .hero-left{flex:1; min-width:320px}
+  .hero-right{flex:0 0 460px; display:flex; justify-content:center}
+
+  .hero-title{
+    font-size:44px;
+    margin:6px 0 6px 0;
+    line-height:1.02;
+    letter-spacing:0.6px;
+  }
+  .hero-sub{color:var(--muted); margin:10px 0 18px 0}
+  .hero-desc{color:var(--muted); max-width:650px; margin-bottom:18px}
+
+  .donation-actions{display:flex; gap:12px; flex-wrap:wrap}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 14px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    text-decoration:none;
+    font-weight:600;
+    font-size:14px;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:#022029; box-shadow: 0 6px 22px rgba(3,7,18,0.6)}
+  .btn-ghost{background:transparent; color:var(--accent-1); border:1px solid rgba(255,255,255,0.04)}
+  .btn-secondary{background:var(--glass); color:var(--accent-1); border:1px solid rgba(255,255,255,0.03)}
+
+  /* Donation Card (right) */
+  .donation-card{
+    width:420px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:18px;
+    padding:18px;
+    box-shadow: 0 8px 30px var(--accent-glow);
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+  .card-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px}
+  .server-badge{display:flex; gap:10px; align-items:center}
+  .server-logo{
+    width:48px; height:48px; border-radius:10px; background:linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; color:#022029; font-weight:800; font-size:18px;
+    box-shadow: 0 6px 18px rgba(3,7,18,0.45);
+  }
+  .goal-label{color:var(--muted); font-size:13px}
+
+  .progress-wrap{background:var(--glass-2); border-radius:10px; padding:12px; margin-top:12px}
+  .progress-bar{height:16px; background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); border-radius:8px; width:0%; transition:width 1s ease}
+  .progress-meta{display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-top:8px}
+
+  .donation-tiers{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px}
+  .tier{padding:10px; background:var(--glass); border-radius:10px; display:flex; flex-direction:column; gap:8px; text-align:center}
+  .tier h4{margin:0}
+  .tier small{color:var(--muted)}
+  .tier .tier-btn{margin-top:6px}
+
+  .recent-donors{margin-top:14px}
+  .donor-row{display:flex; align-items:center; gap:10px; padding:8px 6px; border-radius:8px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); margin-bottom:8px}
+  .donor-avatar{width:36px; height:36px; border-radius:8px; background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--muted)}
+  .donor-meta{font-size:14px}
+  .donor-amt{margin-left:auto; font-weight:700; color:var(--accent-1)}
+
+  /* Sections */
+  section{padding:30px 0; max-width:1200px; margin:0 auto}
+  .section-header{display:flex; align-items:center; gap:12px; margin-bottom:16px}
+  .section-title{font-size:20px; margin:0}
+  .section-line{height:2px; width:56px; background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); border-radius:4px}
+
+  .contact-grid{display:grid; grid-template-columns:1fr 400px; gap:20px}
+  .contact-card{background:var(--card); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.02)}
+  .input, textarea, select{width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit}
+  .label{font-size:13px; color:var(--muted); margin-bottom:6px}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.03); margin-top:18px; padding:18px 20px; color:var(--muted); text-align:center}
+
+  /* Modal (QR & manual) */
+  .modal-backdrop{position:fixed; inset:0; background:rgba(2,6,23,0.6); display:none; align-items:center; justify-content:center; z-index:2000}
+  .modal{width:420px; max-width:95%; background:linear-gradient(180deg, #06121b, #071827); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.03)}
+  .modal h3{margin:0 0 10px 0}
+  .modal .option{display:flex; align-items:center; gap:12px; padding:10px; border-radius:10px; background:var(--glass); margin-bottom:10px}
+  .close-x{margin-left:auto; cursor:pointer; color:var(--muted)}
+
+  /* small screens */
+  @media (max-width:900px){
+    .hero{flex-direction:column; align-items:stretch}
+    .hero-right{order:-1; width:100%}
+    .contact-grid{grid-template-columns:1fr}
+    .nav-links{display:none}
+    .main{padding-top:120px}
+  }
+</style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-left">
+        <div class="site-logo-pixel">KEWLKRAFT</div>
+        <div style="color:var(--muted); font-size:13px; margin-left:6px">Community Server</div>
+      </div>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#donate-details">Donate</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px">
+        <a class="btn btn-ghost" href="#discord" onclick="window.open('https://discord.gg/yGEJcQVxE7','_blank')"><i class="fab fa-discord"></i> Discord</a>
+        <button class="btn btn-primary" id="donateNowTop">Donate</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <!-- Hero -->
+    <section id="home" class="hero">
+      <div class="hero-left">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="server-logo">KK</div>
+          <div>
+            <div style="font-size:13px;color:var(--muted)">KewlKraft</div>
+            <div style="font-weight:700;font-size:16px">OP SURVIVAL</div>
+          </div>
+        </div>
+
+        <h1 class="hero-title">Keep KewlKraft running!</h1>
+        <div class="hero-sub">All donations help with hosting, backups, and community content.</div>
+        <p class="hero-desc">KewlKraft is a community-run Minecraft server. We rely on small donations to pay for credits that keep the server online. Help us reach our 6-month funding goal so everyone can keep playing without interruptions.</p>
+
+        <div class="donation-actions">
+          <button class="btn btn-primary" id="donateNow">Donate Now</button>
+          <a class="btn btn-secondary" href="#donate-details">Donation Details <i class="fas fa-arrow-down" style="opacity:0.85"></i></a>
+          <a class="btn btn-ghost" href="#faq">How donations are used</a>
+        </div>
+
+        <div style="margin-top:18px; color:var(--muted); font-size:13px">
+          Suggested: small monthly donations keep the server stable — $1+, any amount helps.
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="donation-card">
+          <div class="card-header">
+            <div class="server-badge">
+              <div class="server-logo">KK</div>
+              <div>
+                <div style="font-weight:700">KewlKraft</div>
+                <div class="goal-label">Donation Goal</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:12px; color:var(--muted)">Server</div>
+              <div style="font-weight:700">kewlkraft.minehut.gg</div>
+            </div>
+          </div>
+
+          <div>
+            <!-- Goal / Raised -->
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div style="flex:1">
+                <div style="font-size:12px;color:var(--muted)">Goal</div>
+                <div style="font-weight:700" id="goalUSD">$60</div>
+                <div style="font-size:12px;color:var(--muted)">(10,800 credits — 6 months)</div>
+              </div>
+              <div style="flex:1">
+                <div style="font-size:12px;color:var(--muted)">Raised</div>
+                <div style="font-weight:700" id="raisedAmount">$0</div>
+                <div style="font-size:12px;color:var(--muted)" id="raisedCredits">0 credits</div>
+              </div>
+            </div>
+
+            <div class="progress-wrap">
+              <div class="progress-bar" id="progressBar" style="width:0%"></div>
+              <div class="progress-meta">
+                <span id="progressPercent">0%</span>
+                <span id="progressRemaining">0 credits left</span>
+              </div>
+            </div>
+
+            <!-- Donation quick actions -->
+            <div style="display:flex; gap:8px; margin-top:14px;">
+              <button class="btn btn-primary" onclick="openCashModal()">Donate via Cash App</button>
+              <button class="btn btn-secondary" onclick="openManual()">Manual / Copy Cash Tag</button>
+            </div>
+
+            <!-- Quick suggested tiers (informational only) -->
+            <div class="donation-tiers" aria-hidden="true">
+              <div class="tier">
+                <h4>1,800</h4>
+                <small>1 month of credits — $10</small>
+              </div>
+              <div class="tier">
+                <h4>3,600</h4>
+                <small>2 months — $20</small>
+              </div>
+              <div class="tier">
+                <h4>10,800</h4>
+                <small>6 months — $60 (goal)</small>
+              </div>
+              <div class="tier">
+                <h4>Custom</h4>
+                <small>Any amount helps</small>
+              </div>
+            </div>
+
+            <!-- Recent donors placeholders -->
+            <div class="recent-donors">
+              <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Recent supporters</div>
+              <div class="donor-row"><div class="donor-avatar">A</div><div class="donor-meta">Alex <div style="font-size:12px;color:var(--muted)">Thanks!</div></div><div class="donor-amt">$5</div></div>
+              <div class="donor-row"><div class="donor-avatar">M</div><div class="donor-meta">Mina <div style="font-size:12px;color:var(--muted)">Keep it up</div></div><div class="donor-amt">$3</div></div>
+              <div class="donor-row"><div class="donor-avatar">S</div><div class="donor-meta">Sam <div style="font-size:12px;color:var(--muted)">For hosting</div></div><div class="donor-amt">$1</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Donation details -->
+    <section id="donate-details">
+      <div class="section-header">
+        <h3 class="section-title">How donations work</h3>
+        <div class="section-line"></div>
+      </div>
+      <div style="color:var(--muted); max-width:900px; margin:0 auto">
+        <p>We buy server credits in blocks: <strong>1,800 credits = $10</strong>. Our goal is to secure <strong>6 months (10,800 credits)</strong> of credits = <strong>$60</strong>. Donations cover hosting, backups, anti-cheat, and community events.</p>
+        <ul style="color:var(--muted)">
+          <li>Minimum donation: any amount — every bit helps</li>
+          <li>Primary payment: Cash App — Cash Tag: <strong>$itschiping</strong></li>
+          <li>We keep donors updated on Discord with major purchases</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="section-header">
+        <h3 class="section-title">Frequently asked questions</h3>
+        <div class="section-line"></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:1200px; margin:0 auto">
+        <div class="contact-card">
+          <h4>Will donations give in-game advantages?</h4>
+          <p style="color:var(--muted)">Donations keep the server online and pay for features. We do not sell pay-to-win advantages; any perks will be cosmetic or strictly balanced.</p>
+        </div>
+        <div class="contact-card">
+          <h4>Is my data safe?</h4>
+          <p style="color:var(--muted)">Cash App handles payments; we do not receive payment card details. If you send a screenshot or transaction ID, use Discord DMs for verification.</p>
+        </div>
+        <div class="contact-card">
+          <h4>Can I get a refund?</h4>
+          <p style="color:var(--muted)">Refunds are handled by the payment provider. Contact us on Discord if there's an issue and we'll help coordinate.</p>
+        </div>
+        <div class="contact-card">
+          <h4>Do you publish donation usage?</h4>
+          <p style="color:var(--muted)">Yes — big purchases and important updates are posted in the Announcements channel on Discord.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="section-header">
+        <h3 class="section-title">Contact & Support</h3>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="contact-grid" style="max-width:1200px; margin:0 auto;">
+        <div>
+          <div class="contact-card">
+            <h4>Contact</h4>
+            <p style="color:var(--muted)">Need help with a donation? Reach us on Discord for the fastest support.</p>
+            <div style="display:flex;gap:10px;margin-top:10px">
+              <a class="btn btn-ghost" href="#" onclick="window.open('https://discord.gg/yGEJcQVxE7','_blank')"><i class="fab fa-discord"></i> Discord</a>
+            </div>
+
+            <div style="margin-top:14px">
+              <div style="font-size:13px;color:var(--muted)"><strong>Server IP</strong></div>
+              <div style="font-weight:700">kewlkraft.minehut.gg</div>
+            </div>
+          </div>
+        </div>
+
+    <footer class="footer">
+      © <span id="currentYear"></span> KewlKraft • Hosted with ❤️ by the community • <a href="#privacy" style="color:var(--muted); text-decoration:none">Privacy</a>
+    </footer>
+  </main>
+
+  <!-- Cash App Modal (QR + Copy) -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div style="display:flex;align-items:center;gap:10px">
+        <h3 id="modalTitle">Donate with Cash App</h3>
+        <div class="close-x" onclick="closeModal()" title="Close"><i class="fas fa-times"></i></div>
+      </div>
+
+      <p style="color:var(--muted); margin-top:8px" id="modalSubtitle">Scan the QR code with your phone or copy the Cash Tag to open in Cash App.</p>
+
+      <div style="margin-top:12px; display:flex; gap:12px; align-items:center;">
+        <div style="flex:0 0 auto;">
+          <!-- QR image (uses Google Chart QR generator) -->
+          <img id="cashQr" src="" alt="Cash App QR" style="width:180px; height:180px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)" />
+        </div>
+
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--muted)">Cash Tag</div>
+          <div style="font-weight:700; font-size:18px; margin-top:6px" id="cashTagDisplay">$itschiping</div>
+
+          <div style="display:flex; gap:8px; margin-top:12px">
+            <button class="btn btn-primary" onclick="openCashAppLink()">Open in Cash App</button>
+            <button class="btn btn-secondary" onclick="copyCashTag()">Copy Tag</button>
+          </div>
+
+          <div style="margin-top:10px; font-size:13px; color:var(--muted)">
+            Tip: After sending, post a screenshot or transaction ID in Discord so we can confirm and add you to supporters list (if you want).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // ===== CONFIG =====
+  const CONFIG = {
+    cashTag: "$itschiping",
+    cashUrl: "https://cash.app/$itschiping", // link opened by "Open in Cash App"
+    creditsPerBlock: 1800, // credits per $10
+    dollarsPerBlock: 10,   // cost for 1,800 credits
+    goalCredits: 10800,    // 6 months -> 10,800 credits
+    // Set the amount you've already raised in USD here:
+    raisedUSD: 0.00
+  };
+  // Derived
+  CONFIG.goalUSD = (CONFIG.goalCredits / CONFIG.creditsPerBlock) * CONFIG.dollarsPerBlock; // $60
+
+  // DOM refs
+  const raisedEl = document.getElementById('raisedAmount');
+  const raisedCreditsEl = document.getElementById('raisedCredits');
+  const progressBar = document.getElementById('progressBar');
+  const progressPercent = document.getElementById('progressPercent');
+  const progressRemaining = document.getElementById('progressRemaining');
+  const goalUSDEl = document.getElementById('goalUSD');
+
+  // Initialize UI
+  function renderAll(){
+    const r = Number(CONFIG.raisedUSD) || 0;
+    const goal = Number(CONFIG.goalUSD);
+    const percent = Math.min(100, Math.round((r / goal) * 100));
+    const raisedCredits = Math.round((r / CONFIG.dollarsPerBlock) * CONFIG.creditsPerBlock);
+
+    goalUSDEl.textContent = "$" + goal.toFixed(2);
+    raisedEl.textContent = "$" + r.toFixed(2);
+    raisedCreditsEl.textContent = raisedCredits.toLocaleString() + " credits";
+
+    progressBar.style.width = percent + "%";
+    progressPercent.textContent = percent + "%";
+    const creditsLeft = Math.max(0, CONFIG.goalCredits - raisedCredits);
+    progressRemaining.textContent = creditsLeft.toLocaleString() + " credits left";
+  }
+
+  // Initial render
+  renderAll();
+
+  // Donation modal logic
+  const modal = document.getElementById('modalBackdrop');
+  const cashQr = document.getElementById('cashQr');
+  const cashTagDisplay = document.getElementById('cashTagDisplay');
+
+  function openCashModal(){
+    // Generate QR code via Google Chart API (encodes the Cash App URL)
+    const encoded = encodeURIComponent(CONFIG.cashUrl);
+    cashQr.src = `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encoded}&chld=L|1`;
+    cashTagDisplay.textContent = CONFIG.cashTag;
+    modal.style.display = "flex";
+    modal.setAttribute('aria-hidden','false');
+  }
+
+  function closeModal(){
+    modal.style.display = "none";
+    modal.setAttribute('aria-hidden','true');
+  }
+
+  function openManual(){
+    copyCashTag();
+    alert("Cash Tag copied to clipboard. Open Cash App and paste the tag to donate. Or click Donate and use the QR code.");
+    openCashModal();
+  }
+
+  function openCashAppLink(){
+    // attempt to open the cash app link; opens web version if not installed
+    window.open(CONFIG.cashUrl, "_blank");
+  }
+
+  function copyCashTag(){
+    const text = CONFIG.cashTag;
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Cash Tag copied: " + text);
+      }, ()=> {
+        prompt("Copy this Cash Tag:", text);
+      });
+    } else {
+      prompt("Copy this Cash Tag:", text);
+    }
+  }
+
+  // Wire donate buttons
+  document.getElementById('donateNow').addEventListener('click', openCashModal);
+  document.getElementById('donateNowTop').addEventListener('click', openCashModal);
+
+  // Close modal by clicking backdrop
+  modal.addEventListener('click', (e) => {
+    if(e.target === modal) closeModal();
+  });
+
+  // Set year
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+  // -------------------------------
+  // Quick notes for you:
+  // - To update the raised amount, edit CONFIG.raisedUSD in the script above (e.g. raisedUSD: 12.50)
+  // - If you want an admin input on the page (so you don't edit code every time), I can add that next.
+  // - The QR uses Google Chart API to generate a QR for the cash.app link (works fine for Cash App).
+  // -------------------------------
+
+  // Example: demo animation if you want to show a growing counter (uncomment to demo):
+  // (function demoAnimate() {
+  //   let start = 0, end = CONFIG.raisedUSD;
+  //   let steps = 30, i = 0;
+  //   const timer = setInterval(() => {
+  //     i++;
+  //     const value = start + (end - start) * (i/steps);
+  //     CONFIG.raisedUSD = value;
+  //     renderAll();
+  //     if(i >= steps) clearInterval(timer);
+  //   }, 25);
+  // })();
+</script>
+</body>
+</html>
