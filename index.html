@@ -394,38 +394,41 @@
     </footer>
   </main>
 
-  <!-- Cash App Modal (QR + Copy) -->
-  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div style="display:flex;align-items:center;gap:10px">
-        <h3 id="modalTitle">Donate with Cash App</h3>
-        <div class="close-x" onclick="closeModal()" title="Close"><i class="fas fa-times"></i></div>
+<!-- Cash App Modal (QR + Copy) -->
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div style="display:flex;align-items:center;gap:10px">
+      <h3 id="modalTitle">Donate with Cash App</h3>
+      <div class="close-x" onclick="closeModal()" title="Close"><i class="fas fa-times"></i></div>
+    </div>
+
+    <p style="color:var(--muted); margin-top:8px" id="modalSubtitle">
+      Scan the QR code with your phone or copy the Cash Tag to open in Cash App.
+    </p>
+
+    <div style="margin-top:12px; display:flex; gap:12px; align-items:center;">
+      <div style="flex:0 0 auto;">
+        <!-- QR image now uses local file -->
+        <img id="cashQr" src="images/$itsChiping.png" alt="Cash App QR"
+          style="width:180px; height:180px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)" />
       </div>
 
-      <p style="color:var(--muted); margin-top:8px" id="modalSubtitle">Scan the QR code with your phone or copy the Cash Tag to open in Cash App.</p>
+      <div style="flex:1">
+        <div style="font-size:13px;color:var(--muted)">Cash Tag</div>
+        <div style="font-weight:700; font-size:18px; margin-top:6px" id="cashTagDisplay">$itschiping</div>
 
-      <div style="margin-top:12px; display:flex; gap:12px; align-items:center;">
-        <div style="flex:0 0 auto;">
-          <!-- QR image (uses Google Chart QR generator) -->
-          <img id="cashQr" src="" alt="Cash App QR" style="width:180px; height:180px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)" />
+        <div style="display:flex; gap:8px; margin-top:12px">
+          <button class="btn btn-primary" onclick="openCashAppLink()">Open in Cash App</button>
+          <button class="btn btn-secondary" onclick="copyCashTag()">Copy Tag</button>
         </div>
 
-        <div style="flex:1">
-          <div style="font-size:13px;color:var(--muted)">Cash Tag</div>
-          <div style="font-weight:700; font-size:18px; margin-top:6px" id="cashTagDisplay">$itschiping</div>
-
-          <div style="display:flex; gap:8px; margin-top:12px">
-            <button class="btn btn-primary" onclick="openCashAppLink()">Open in Cash App</button>
-            <button class="btn btn-secondary" onclick="copyCashTag()">Copy Tag</button>
-          </div>
-
-          <div style="margin-top:10px; font-size:13px; color:var(--muted)">
-            Tip: After sending, post a screenshot or transaction ID in Discord so we can confirm and add you to supporters list (if you want).
-          </div>
+        <div style="margin-top:10px; font-size:13px; color:var(--muted)">
+          Tip: Make the note: Kewlkraft for we can add you to the recent supporters. (if you want).
         </div>
       </div>
     </div>
   </div>
+</div>
 
 <script>
   // ===== CONFIG =====
@@ -471,57 +474,55 @@
   // Initial render
   renderAll();
 
-  // Donation modal logic
-  const modal = document.getElementById('modalBackdrop');
-  const cashQr = document.getElementById('cashQr');
-  const cashTagDisplay = document.getElementById('cashTagDisplay');
+ // Donation modal logic
+const modal = document.getElementById('modalBackdrop');
+const cashTagDisplay = document.getElementById('cashTagDisplay');
+const cashQr = document.getElementById('cashQr');
 
-  function openCashModal(){
-    // Generate QR code via Google Chart API (encodes the Cash App URL)
-    const encoded = encodeURIComponent(CONFIG.cashUrl);
-    cashQr.src = `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encoded}&chld=L|1`;
-    cashTagDisplay.textContent = CONFIG.cashTag;
-    modal.style.display = "flex";
-    modal.setAttribute('aria-hidden','false');
-  }
+function openCashModal(){
+  // USE LOCAL QR IMAGE — NO Google QR
+  cashQr.src = "images/$itsChiping.png";
+  cashTagDisplay.textContent = CONFIG.cashTag;
+  modal.style.display = "flex";
+  modal.setAttribute('aria-hidden','false');
+}
 
-  function closeModal(){
-    modal.style.display = "none";
-    modal.setAttribute('aria-hidden','true');
-  }
+function closeModal(){
+  modal.style.display = "none";
+  modal.setAttribute('aria-hidden','true');
+}
 
-  function openManual(){
-    copyCashTag();
-    alert("Cash Tag copied to clipboard. Open Cash App and paste the tag to donate. Or click Donate and use the QR code.");
-    openCashModal();
-  }
+function openManual(){
+  copyCashTag();
+  alert("Cash Tag copied to clipboard. Open Cash App and paste the tag to donate. Or click Donate and use the QR code.");
+  openCashModal();
+}
 
-  function openCashAppLink(){
-    // attempt to open the cash app link; opens web version if not installed
-    window.open(CONFIG.cashUrl, "_blank");
-  }
+function openCashAppLink(){
+  window.open(CONFIG.cashUrl, "_blank");
+}
 
-  function copyCashTag(){
-    const text = CONFIG.cashTag;
-    if(navigator.clipboard){
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Cash Tag copied: " + text);
-      }, ()=> {
-        prompt("Copy this Cash Tag:", text);
-      });
-    } else {
+function copyCashTag(){
+  const text = CONFIG.cashTag;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Cash Tag copied: " + text);
+    }, ()=> {
       prompt("Copy this Cash Tag:", text);
-    }
+    });
+  } else {
+    prompt("Copy this Cash Tag:", text);
   }
+}
 
-  // Wire donate buttons
-  document.getElementById('donateNow').addEventListener('click', openCashModal);
-  document.getElementById('donateNowTop').addEventListener('click', openCashModal);
+// Wire donate buttons
+document.getElementById('donateNow').addEventListener('click', openCashModal);
+document.getElementById('donateNowTop').addEventListener('click', openCashModal);
 
-  // Close modal by clicking backdrop
-  modal.addEventListener('click', (e) => {
-    if(e.target === modal) closeModal();
-  });
+// Close modal by clicking backdrop
+modal.addEventListener('click', (e) => {
+  if(e.target === modal) closeModal();
+});
 
   // Set year
   document.getElementById('currentYear').textContent = new Date().getFullYear();
