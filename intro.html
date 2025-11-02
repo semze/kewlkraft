@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KewlKraft Intro</title>
+  <style>
+    /* Fullscreen dark navy intro */
+    #intro {
+      position: fixed;
+      top:0; left:0;
+      width: 100%;
+      height: 100%;
+      background-color: #0a1a2f; /* dark navy */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .intro-content {
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #intro-title {
+      font-size: 6rem;
+      font-weight: bold;
+      margin: 0;
+      color: #ffffff;
+    }
+
+    #intro-typing {
+      font-size: 2.5rem;
+      margin-top: 15px;
+      min-height: 2.5rem;
+      color: #42a5f5;
+    }
+
+    #loading-text {
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-top: 15px;
+      opacity: 0;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    #progress-container {
+      width: 300px;
+      height: 20px;
+      border: 2px solid #42a5f5;
+      border-radius: 10px;
+      margin: 15px auto 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background-color: #42a5f5;
+      border-radius: 10px;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 15px #42a5f5, 0 0 30px #42a5f5 inset;
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.05); }
+    }
+
+    #intro-welcome {
+      font-size: 3rem;
+      margin-top: 20px;
+      color: #ffffff;
+      transform: scale(0);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+  <div id="intro">
+    <div class="intro-content">
+      <h1 id="intro-title">KewlKraft</h1>
+      <p id="intro-typing"></p>
+      <p id="loading-text">Loading...</p>
+      <div id="progress-container">
+        <div id="progress-bar"></div>
+      </div>
+      <h2 id="intro-welcome">WELCOME!</h2>
+    </div>
+  </div>
+
+  <script>
+    const typingEl = document.getElementById('intro-typing');
+    const welcomeEl = document.getElementById('intro-welcome');
+    const loadingText = document.getElementById('loading-text');
+    const progressContainer = document.getElementById('progress-container');
+    const progressBar = document.getElementById('progress-bar');
+    const intro = document.getElementById('intro');
+
+    const text = "kewlkraft.org";
+
+    function typeText() {
+      let i = 0;
+      typingEl.textContent = "";
+      const interval = setInterval(() => {
+        typingEl.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          startLoading();
+        }
+      }, 80);
+    }
+
+    function startLoading() {
+      loadingText.style.opacity = '1';
+      progressContainer.style.opacity = '1';
+
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress++;
+        progressBar.style.width = progress + '%';
+        if (progress >= 100) {
+          clearInterval(progressInterval);
+          showWelcome();
+        }
+      }, 30);
+    }
+
+    function showWelcome() {
+      loadingText.style.opacity = '0';
+      progressContainer.style.opacity = '0';
+      welcomeEl.style.transform = 'scale(1)';
+      welcomeEl.style.opacity = '1';
+      setTimeout(() => {
+        intro.style.transition = 'opacity 0.6s ease';
+        intro.style.opacity = '0';
+        setTimeout(() => {
+          window.location.href = "index.html"; // redirect to main page
+        }, 600);
+      }, 1200);
+    }
+
+    typeText();
+  </script>
+</body>
+</html>
