@@ -13,6 +13,7 @@
       --bg: #ffffff;
       --text: #1a1a1a;
       --border: #e0e0e0;
+      --section-bg: #fafafa;
     }
 
     * {
@@ -28,7 +29,6 @@
       line-height: 1.7;
     }
 
-    /* NAVBAR */
     nav {
       position: sticky;
       top: 0;
@@ -54,33 +54,50 @@
     }
 
     header {
+      position: relative;
       text-align: center;
-      padding: 60px 20px 30px;
-      background: linear-gradient(180deg, #e3f2fd, #ffffff);
+      padding: 120px 20px 80px;
+      background: linear-gradient(180deg, #e3f2fdcc, #ffffffee), url("screenshots/screenshot1.png") center/cover no-repeat;
+      background-attachment: fixed;
+      color: #1a1a1a;
       border-bottom: 1px solid var(--border);
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #e3f2fd66 10%, #ffffff 90%);
+      z-index: 1;
+    }
+
+    header * {
+      position: relative;
+      z-index: 2;
     }
 
     header h1 {
       color: var(--primary);
-      font-size: 2.4rem;
+      font-size: 2.6rem;
       font-weight: 700;
       margin-bottom: 10px;
     }
 
     header p {
       font-size: 1.1rem;
-      color: #555;
+      color: #333;
       margin: 5px 0;
     }
 
     .server-info {
-      margin-top: 15px;
-      background: #f0f6ff;
+      margin-top: 20px;
+      background: #f0f6ffcc;
       border: 1px solid var(--border);
       border-radius: 8px;
       display: inline-block;
       padding: 10px 18px;
       font-size: 0.95rem;
+      backdrop-filter: blur(5px);
     }
 
     .server-info span {
@@ -89,7 +106,7 @@
     }
 
     main {
-      max-width: 900px;
+      max-width: 950px;
       margin: 40px auto;
       padding: 0 20px;
     }
@@ -99,7 +116,7 @@
       padding: 30px;
       border: 1px solid var(--border);
       border-radius: 12px;
-      background-color: #fafafa;
+      background-color: var(--section-bg);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
       transition: box-shadow 0.3s ease, transform 0.3s ease;
       opacity: 0;
@@ -127,21 +144,63 @@
       margin-bottom: 16px;
     }
 
-    p {
-      margin-bottom: 15px;
-      color: #333;
-    }
-
     ul {
       padding-left: 20px;
+      list-style-type: disc;
     }
 
     ul li {
       margin-bottom: 8px;
+      color: #333;
     }
 
     strong {
       color: var(--primary);
+    }
+
+    /* 🖼️ Gallery Section */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Lightbox effect */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .lightbox.active {
+      display: flex;
     }
 
     footer {
@@ -165,7 +224,7 @@
 
     @media (max-width: 600px) {
       header h1 {
-        font-size: 1.8rem;
+        font-size: 1.9rem;
       }
       nav {
         flex-wrap: wrap;
@@ -180,15 +239,18 @@
 <body>
   <nav>
     <a href="#about">About</a>
-    <a href="#unique">Features</a>
     <a href="#rules">Rules</a>
+    <a href="#discord">Discord</a>
+    <a href="#punishments">Punishments</a>
+    <a href="#staff">Staff</a>
     <a href="#privacy">Privacy</a>
     <a href="#terms">Terms</a>
+    <a href="#gallery">Gallery</a>
   </nav>
 
   <header>
-    <h1>KewlKraft</h1>
-    <p>OP Survival • Non Pay-to-Win • Safe and Fair Gameplay</p>
+    <h1>🏰 Welcome to KewlKraft</h1>
+    <p>1.21.4+ | Crossplay Survival • OP Economy • Free-to-Play</p>
     <div class="server-info">
       <span><strong>Java:</strong> kewlkraft.org</span>
       <span><strong>Bedrock:</strong> bedrock.kewlkraft.org • Port: 9610</span>
@@ -198,46 +260,163 @@
   <main>
     <section id="about">
       <h2>About KewlKraft</h2>
-      <p><strong>KewlKraft</strong> is an OP Survival server that’s completely non pay-to-win. Everything — from crate keys to ranks — is earned through gameplay. Our focus is on fairness, safety, and building a welcoming community for everyone.</p>
-    </section>
-
-    <section id="unique">
-      <h2>What Makes KewlKraft Unique</h2>
-      <ul>
-        <li><strong>Free Crate Keys & Monthly Events:</strong> Earn new crate keys every month, with special ones for holiday events — all free.</li>
-        <li><strong>Kewl Levels & Progression:</strong> Gain XP from mining, fighting mobs, and exploring. Rank up every 5 levels to unlock perks and free ranks.</li>
-        <li><strong>Custom Holiday Plugins:</strong> Enjoy seasonal features built specifically for each holiday month.</li>
-        <li><strong>Community-Focused:</strong> Toxicity and harassment aren’t tolerated. Everyone should feel welcome and safe.</li>
-        <li><strong>Helpful Staff:</strong> Our volunteer staff team ensures fair play and a smooth server experience.</li>
-      </ul>
+      <p><strong>KewlKraft</strong> is a free-to-play, crossplay (Bedrock + Java) survival economy server focused on fairness, creativity, and community. Our goal is to offer a safe, welcoming, and enjoyable space for players to build, trade, and have fun without pay-to-win systems.</p>
     </section>
 
     <section id="rules">
-      <h2>Rules & Code of Conduct</h2>
+      <h2>🎮 Minecraft Rules — Gameplay & Building</h2>
       <ul>
-        <li>No griefing, stealing, or exploiting bugs.</li>
-        <li>No hacked clients, x-ray, or unfair modifications.</li>
-        <li>Be respectful in chat; casual swearing is fine, but don’t be rude.</li>
-        <li>No racism, discrimination, or hate speech.</li>
-        <li>No spamming, advertising, or self-promotion.</li>
-        <li>No NSFW or inappropriate content.</li>
-        <li>Respect staff and all members of the community.</li>
+        <li>No griefing other players' builds or property.</li>
+        <li>No stealing from other players (unless explicitly allowed in certain zones).</li>
+        <li>No tp trapping players.</li>
+        <li>No exploiting glitches or duplication bugs.</li>
+        <li>No hacked clients, x-ray, or unfair advantage mods.</li>
+        <li>No lag machines or excessive redstone contraptions.</li>
+        <li>Respect build boundaries; do not build too close without permission.</li>
+      </ul>
+
+      <h2>💬 Minecraft Rules — Chat & Behavior</h2>
+      <ul>
+        <li>No disrespectful swearing or harassment (casual swearing is fine).</li>
+        <li>No spamming chat or commands.</li>
+        <li>No racism, discrimination, or hate speech of any kind.</li>
+        <li>No advertising other servers or services.</li>
+        <li>No begging for items, ranks, or special treatment.</li>
+        <li>English only in public chat; other languages allowed in private messages.</li>
+        <li>No excessive caps lock or special characters.</li>
+        <li>No “six-seven” jokes, brainrot jokes, or inappropriate humor.</li>
+      </ul>
+
+      <h2>⚔️ Minecraft Rules — PvP & Combat</h2>
+      <ul>
+        <li>No combat logging (logging out during fights).</li>
+        <li>No spawn killing or camping.</li>
+        <li>Respect PvP zones and safe areas.</li>
+        <li>No exploits or cheats for unfair combat advantages.</li>
+      </ul>
+
+      <h2>🔒 Minecraft Rules — Technical & Security</h2>
+      <ul>
+        <li>No hacking, DDoS, or attempts to compromise the server.</li>
+        <li>No sharing personal information of other players.</li>
+        <li>No impersonating staff or other players.</li>
+        <li>Report bugs and exploits to staff — do not abuse them.</li>
       </ul>
     </section>
 
+    <section id="discord">
+      <h2>🎙️ Discord Rules — Voice Channels</h2>
+      <ul>
+        <li>No doing drugs or using illegal substances on mic.</li>
+        <li>Keep background noise to a minimum; use push-to-talk if needed.</li>
+        <li>No loud music or soundboards without consent from others.</li>
+        <li>No voice changers or spam.</li>
+        <li>Respect others if asked to mute or lower volume.</li>
+      </ul>
+
+      <h2>💭 Discord Rules — Chat Channels</h2>
+      <ul>
+        <li>No spamming messages, emojis, or reactions.</li>
+        <li>No disrespectful swearing or harassment.</li>
+        <li>No racism, discrimination, or hate speech.</li>
+        <li>Use channels for their intended purpose.</li>
+        <li>No NSFW or inappropriate content.</li>
+        <li>No advertising other Discord servers or services.</li>
+      </ul>
+
+      <h2>👥 Discord Rules — General Conduct</h2>
+      <ul>
+        <li>Respect all members and staff.</li>
+        <li>No doxxing or sharing private info.</li>
+        <li>No impersonation of staff or users.</li>
+        <li>Follow Discord’s Terms of Service and Community Guidelines.</li>
+        <li>No alternate accounts to evade punishments.</li>
+      </ul>
+    </section>
+
+    <section id="punishments">
+      <h2>⚠️ Punishment System</h2>
+      <ul>
+        <li><strong>1st Offense:</strong> Warning</li>
+        <li><strong>2nd Offense:</strong> Temporary mute or ban (1–24 hours)</li>
+        <li><strong>3rd Offense:</strong> Temporary ban (1–7 days)</li>
+        <li><strong>4th Offense:</strong> Permanent ban</li>
+      </ul>
+
+      <h2>🚫 Severe Offenses (Instant Permanent Ban)</h2>
+      <ul>
+        <li>Hacking or attempting to compromise the server.</li>
+        <li>Doxxing or sharing personal information maliciously.</li>
+        <li>Racism, hate speech, or severe harassment.</li>
+        <li>NSFW content involving minors.</li>
+        <li>Real-world threats or encouraging self-harm.</li>
+      </ul>
+
+      <h2>📞 Ban Appeals & Contact</h2>
+      <ul>
+        <li>Ban appeals can be submitted through Discord DMs to staff.</li>
+        <li>Appeals are reviewed within 48 hours.</li>
+        <li>Create a ticket in Discord for questions or reports.</li>
+        <li>Use the in-game <strong>/report</strong> command for violations.</li>
+        <li>False reports may result in punishment.</li>
+      </ul>
+    </section>
+
+    <section id="staff">
+      <h2>🛡️ Staff Guidelines</h2>
+      <ul>
+        <li>Staff decisions are final.</li>
+        <li>Do not argue with staff publicly.</li>
+        <li>If you disagree, discuss it privately and respectfully.</li>
+        <li>Staff are volunteers — treat them with respect.</li>
+        <li>Provide evidence when reporting rule violations.</li>
+      </ul>
+
+      <p><strong>Last Updated:</strong> October 2025 • Have fun and enjoy your stay on KewlKraft!</p>
+    </section>
+
     <section id="privacy">
-      <h2>Privacy Policy</h2>
-      <p><strong>Your privacy matters.</strong> KewlKraft does not collect, track, or share any personal data. We don’t use cookies, analytics, or third-party tracking tools. Gameplay data (like inventory and builds) exists only within the Minecraft server environment and is not stored externally.</p>
+      <h2>🔐 Privacy Policy</h2>
+      <p><strong>Your privacy matters to us.</strong> KewlKraft does not collect, sell, or share any personal data outside of what’s required for normal gameplay and community management.</p>
+      <ul>
+        <li>We do not use cookies, ads, or analytics tracking on our website.</li>
+        <li>We do not store passwords — Minecraft and Discord handle authentication securely on their own platforms.</li>
+        <li>Gameplay data (like inventories, stats, and builds) stays on our server and is not shared externally.</li>
+        <li>Discord messages and interactions follow Discord’s privacy policy and data storage rules.</li>
+        <li>By using our services, you consent to the storage of your in-game data as needed to operate the server.</li>
+        <li>Players can request data deletion (e.g., full player file removal) by opening a Discord support ticket.</li>
+      </ul>
+      <p>We prioritize your safety and confidentiality. If you have questions or privacy concerns, please contact an admin via our Discord.</p>
     </section>
 
     <section id="terms">
-      <h2>Terms of Service</h2>
-      <p>By joining KewlKraft or participating in our Discord, you agree to follow the server’s rules and community guidelines. Staff may issue warnings, mutes, or bans if necessary to maintain a safe and fair environment. Continued use of our services implies agreement to these terms.</p>
+      <h2>📜 Terms of Service</h2>
+      <p>By joining the <strong>KewlKraft Minecraft Server</strong> or participating in its Discord community, you agree to abide by all server rules, policies, and community guidelines listed on this page.</p>
+      <ul>
+        <li>All players must follow Minecraft’s and Discord’s official Terms of Service and Community Guidelines.</li>
+        <li>Staff reserve the right to mute, kick, or ban any player who violates these terms or disrupts community harmony.</li>
+        <li>All in-game ranks, items, and currency are virtual and have no real-world monetary value.</li>
+        <li>KewlKraft is a free-to-play experience. Donations (if offered) are optional and non-refundable.</li>
+        <li>We may update rules or policies at any time. Continued use of our server or Discord means you accept those changes.</li>
+        <li>KewlKraft is not affiliated with Mojang, Microsoft, or Discord Inc.</li>
+      </ul>
+      <p><strong>By playing or chatting in our community, you agree to keep it fair, respectful, and fun for everyone.</strong></p>
     </section>
   </main>
-
+    <section id="gallery">
+      <h2>🖼️ Server Gallery</h2>
+      <p>Explore our amazing player-made builds and landmarks from around the world of KewlKraft.</p>
+      <div class="gallery">
+        <img src="screenshots/screenshot2.png" alt="Build 1">
+        <img src="screenshots/screenshot3.png" alt="Build 2">
+        <img src="screenshots/screenshot4.png" alt="Build 3">
+        <img src="screenshots/screenshot5.png" alt="Build 4">
+        <img src="screenshots/screenshot6.png" alt="Build 5">
+        <img src="screenshots/screenshot7.png" alt="Build 6">
+      </div>
+    </section>
   <footer>
-    <p>© 2025 KewlKraft • All rights reserved • Powered by 
+    <p>KewlKraft • Hosted by 
       <a href="https://thejazzcafe.org" target="_blank">thejazzcafe.org</a>
     </p>
   </footer>
